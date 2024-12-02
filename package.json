@@ -1,0 +1,16 @@
+{
+  "name": "aoc-2024",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "one": "node --watch day-1/index"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "4.17.21"
+  }
+}
