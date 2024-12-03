@@ -11,13 +11,13 @@ To create a new day,
 then in package.json, add a new script e.g. for the fourth day:
 
 ```
-jq '.scripts.four = "node --watch day-4"' package.json > package.json.tmp && mv package.json.tmp package.json
+jq '.scripts.four = "ts-node-dev --respawn --transpile-only day-4"' package.json > package.json.tmp && mv package.json.tmp package.json
 ```
 
 or combine into one script:
 
 ```
-cp -R _template/ day-4 && jq '.scripts.four = "node --watch day-4"' package.json > package.json.tmp && mv package.json.tmp package.json
+cp -R _template/ day-4 && jq '.scripts.four = "ts-node-dev --respawn --transpile-only day-4"' package.json > package.json.tmp && mv package.json.tmp package.json
 ```
 
 then run with `npm run four`

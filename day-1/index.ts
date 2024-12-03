@@ -1,16 +1,16 @@
-// import { testInput } from "./test.js";
-import { actualInput } from "./real.js";
+// import { testInput } from "./test.ts";
+import { actualInput } from "./real.ts";
 
 // testCode
 // const rows = testInput.split("\n").filter((l) => l !== "");
 const rows = actualInput.split("\n").filter((l) => l !== "");
 
-const firstArray = [];
-const secondArray = [];
+const firstArray: number[] = [];
+const secondArray: number[] = [];
 rows.forEach((line) => {
   const [first, second] = line.split("   ");
-  firstArray.push(first);
-  secondArray.push(second);
+  firstArray.push(+first);
+  secondArray.push(+second);
 });
 // sort arrays by order
 const sortedFirst = firstArray.sort();
@@ -21,7 +21,7 @@ const sortedSecond = secondArray.sort();
 // Use Reduce for this
 const firstAnswer = sortedFirst.reduce(
   (accumulator, currentValue, currentIndex) => {
-    const diff = currentValue - sortedSecond[currentIndex];
+    const diff = +currentValue - sortedSecond[currentIndex];
     return accumulator + Math.abs(diff);
   },
   0

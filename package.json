@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "1": "node --watch day-1",
-    "2": "node --watch day-2",
-    "3": "node --watch day-3"
+    "one": "ts-node-dev --respawn --transpile-only day-1",
+    "two": "ts-node-dev --respawn --transpile-only day-2",
+    "three": "ts-node-dev --respawn --transpile-only day-3"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node-dev": "2.0.0",
+    "typescript": "5.7.2"
+  }
 }

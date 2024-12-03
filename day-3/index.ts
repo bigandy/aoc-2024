@@ -1,13 +1,13 @@
-import { testInput, testInput2 } from "./test.js";
-import { actualInput } from "./real.js";
+import { testInput, testInput2 } from "./test.ts";
+import { actualInput } from "./real.ts";
 
 // testCode
 const input = testInput;
-// const input2 = testInput2;
+const input2 = testInput2;
 
 // Actual Input
 // const input = actualInput;
-const input2 = actualInput;
+// const input2 = actualInput;
 
 // regex to get the mul() with 2 numbers of 1-3 digits each
 const mulRegexp = new RegExp(/(mul\()([0-9]{1,3},[0-9]{1,3})+(\))/, "g");
@@ -25,7 +25,7 @@ const getSumFromMul = (text) => {
 const firstAnswer = () => {
   const mulMatches = input.match(mulRegexp);
 
-  const answer = mulMatches.reduce((accumulator, currentValue) => {
+  const answer = mulMatches?.reduce((accumulator, currentValue) => {
     // replace the mul() and split the numbers by the comma.
     const sum = getSumFromMul(currentValue);
     return accumulator + sum;
@@ -35,10 +35,16 @@ const firstAnswer = () => {
 
 firstAnswer();
 
+interface Indice {
+  index: number;
+  type: string;
+  result: string;
+}
+
 const getPositions = (searchStr, regExp, type) => {
   var regex = regExp,
     result,
-    indices = [];
+    indices: Indice[] = [];
   while ((result = regex.exec(searchStr))) {
     indices.push({ index: result.index, type, result: result[0] });
   }
@@ -59,8 +65,8 @@ const secondAnswer = () => {
   const out = [...mulPositions, ...doPositions, ...dontPositions];
   const flatOut = out.flat().sort((a, b) => a.index - b.index);
 
-  const ans = [];
-  flatOut.forEach((item) => {
+  const ans: Indice[] = [];
+  flatOut.forEach((item: Indice) => {
     if (enabled && item.type === "mul") {
       // add to array
       ans.push(item);
