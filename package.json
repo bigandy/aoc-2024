@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "one": "node --watch day-1/index"
+    "one": "node --watch day-1",
+    "two": "node --watch day-2"
   },
   "keywords": [],
   "author": "",
