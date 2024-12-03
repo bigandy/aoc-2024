@@ -1,5 +1,9 @@
 # Advent of Code 2024
 
+Attempting #aoc2024 again this year. Using javascript and will see how long I can get this year!
+
+## Instructions
+
 To create a new day,
 
 `cp -R _template/ day-4`
@@ -13,7 +17,7 @@ jq '.scripts.four = "node --watch day-4"' package.json > package.json.tmp && mv 
 or combine into one script:
 
 ```
-cp -R _template/ day-4 && jq '.scripts.4 = "node --watch day-4"' package.json > package.json.tmp && mv package.json.tmp package.json
+cp -R _template/ day-4 && jq '.scripts.four = "node --watch day-4"' package.json > package.json.tmp && mv package.json.tmp package.json
 ```
 
-then run with `npm run 4`
+then run with `npm run four`
