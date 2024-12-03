@@ -6,12 +6,10 @@
   "type": "module",
   "scripts": {
     "one": "node --watch day-1",
-    "two": "node --watch day-2"
+    "two": "node --watch day-2",
+    "three": "node --watch day-3"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "lodash": "4.17.21"
-  }
+  "license": "ISC"
 }
