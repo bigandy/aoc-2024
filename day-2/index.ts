@@ -1,4 +1,4 @@
-import { testInput } from "./test.ts";
+// import { testInput } from "./test.ts";
 import { actualInput } from "./real.ts";
 
 // testCode
@@ -8,7 +8,12 @@ const rows = actualInput.split("\n").filter((l) => l !== "");
 // .slice(0, 1);
 // const rows = actualInput.split("\n").filter((l) => l !== "");
 
-const checkIfPasses = (inputArray) => {
+interface CompareValue {
+  direction: "decreasing" | "increasing" | "same";
+  diff: number;
+}
+
+const checkIfPasses = (inputArray: CompareValue[]) => {
   const allDirectionsSame = inputArray.every(
     (v) => v.direction === inputArray[0].direction
   );
@@ -17,7 +22,7 @@ const checkIfPasses = (inputArray) => {
   return diffInRange && allDirectionsSame;
 };
 
-const compareNumbersInArray = (numberArray) => {
+const compareNumbersInArray = (numberArray: number[]): CompareValue[] => {
   return numberArray
     .map((num, index) => {
       const currentNumber = num;
@@ -38,7 +43,7 @@ const compareNumbersInArray = (numberArray) => {
         return {
           direction,
           diff,
-        };
+        } as CompareValue;
       }
     })
     .filter((n) => n !== undefined);

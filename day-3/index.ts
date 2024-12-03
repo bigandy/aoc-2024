@@ -1,5 +1,5 @@
 import { testInput, testInput2 } from "./test.ts";
-import { actualInput } from "./real.ts";
+// import { actualInput } from "./real.ts";
 
 // testCode
 const input = testInput;
@@ -16,9 +16,9 @@ const doRegexp = new RegExp(/(do\(\))/, "g");
 // regex to get don't()
 const dontRegexp = new RegExp(/(don\'t\(\))/, "g");
 
-const getSumFromMul = (text) => {
+const getSumFromMul = (text: string) => {
   const [a, b] = text.replace("mul(", "").replace(")", "").split(",");
-  const sum = a * b;
+  const sum = +a * +b;
   return sum;
 };
 
@@ -35,13 +35,15 @@ const firstAnswer = () => {
 
 firstAnswer();
 
+type IndiceType = "mul" | "do" | "dont";
+
 interface Indice {
   index: number;
-  type: string;
+  type: IndiceType;
   result: string;
 }
 
-const getPositions = (searchStr, regExp, type) => {
+const getPositions = (searchStr: string, regExp: RegExp, type: IndiceType) => {
   var regex = regExp,
     result,
     indices: Indice[] = [];
