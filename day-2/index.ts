@@ -7,9 +7,10 @@ import { actualInput } from "./real.ts";
 const rows = actualInput.split("\n").filter((l) => l !== "");
 // .slice(0, 1);
 // const rows = actualInput.split("\n").filter((l) => l !== "");
+type Direction = "decreasing" | "increasing" | "same";
 
 interface CompareValue {
-  direction: "decreasing" | "increasing" | "same";
+  direction: Direction;
   diff: number;
 }
 
@@ -22,7 +23,7 @@ const checkIfPasses = (inputArray: CompareValue[]) => {
   return diffInRange && allDirectionsSame;
 };
 
-const compareNumbersInArray = (numberArray: number[]): CompareValue[] => {
+const compareNumbersInArray = (numberArray: number[]) => {
   return numberArray
     .map((num, index) => {
       const currentNumber = num;
@@ -41,9 +42,9 @@ const compareNumbersInArray = (numberArray: number[]): CompareValue[] => {
         }
 
         return {
-          direction,
+          direction: direction as Direction,
           diff,
-        } as CompareValue;
+        };
       }
     })
     .filter((n) => n !== undefined);
