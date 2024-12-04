@@ -12,10 +12,10 @@ const rows = testInput.split("\n").filter((l) => l !== "");
 type AvailableLetter = "X" | "M" | "A" | "S";
 
 const checkSurroundingLetters = (
-  letter,
-  letterIndex,
-  letters,
-  rowLength,
+  letter: AvailableLetter,
+  letterIndex: number,
+  letters: string[],
+  rowLength: number,
   ringWidth = 1
 ) => {
   const allowedLetters = getAllowedLetters(letter, ringWidth);
@@ -43,7 +43,7 @@ const checkSurroundingLetters = (
   // console.log({ adjacentLetters });
 };
 
-const getAllowedLetters = (letter, ringWidth) => {
+const getAllowedLetters = (letter: AvailableLetter, ringWidth: number) => {
   const xmasArray = ["X", "M", "A", "S"];
   const letterIndex = xmasArray.indexOf(letter);
 
@@ -70,21 +70,18 @@ const checkLetterPartofXMAS = (
   );
 
   // return continueCheck && ringWidth === 4;
-
-  if (ringWidth === 4 && continueCheck) {
-    return true;
-  } else if (!continueCheck) {
-    return false;
+  if (continueCheck && ringWidth < 4) {
+    // const newRingWidth = ringWidth + 1;
+    return checkLetterPartofXMAS(
+      letter,
+      letterIndex,
+      letters,
+      rowLength,
+      ringWidth + 1
+    );
   }
 
-  // const newRingWidth = ringWidth + 1;
-  return checkLetterPartofXMAS(
-    letter,
-    letterIndex,
-    letters,
-    rowLength,
-    ringWidth + 1
-  );
+  return continueCheck;
 };
 
 const firstAnswer = () => {
