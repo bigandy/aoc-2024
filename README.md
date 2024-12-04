@@ -6,18 +6,18 @@ Attempting #aoc2024 again this year. Using javascript and will see how long I ca
 
 To create a new day,
 
-`cp -R _template/ day-4`
+`cp -R _template/ day-5`
 
 then in package.json, add a new script e.g. for the fourth day:
 
 ```
-jq '.scripts.four = "ts-node-dev --respawn --transpile-only day-4"' package.json > package.json.tmp && mv package.json.tmp package.json
+jq '.scripts.five = "ts-node-dev --respawn --transpile-only day-5"' package.json > package.json.tmp && mv package.json.tmp package.json
 ```
 
 or combine into one script:
 
 ```
-cp -R _template/ day-4 && jq '.scripts.four = "ts-node-dev --respawn --transpile-only day-4"' package.json > package.json.tmp && mv package.json.tmp package.json
+cp -R _template/ day-5 && jq '.scripts.five = "ts-node-dev --respawn --transpile-only day-5"' package.json > package.json.tmp && mv package.json.tmp package.json
 ```
 
 then run with `npm run four`

@@ -6,7 +6,8 @@
   "scripts": {
     "one": "ts-node-dev --respawn --transpile-only day-1",
     "two": "ts-node-dev --respawn --transpile-only day-2",
-    "three": "ts-node-dev --respawn --transpile-only day-3"
+    "three": "ts-node-dev --respawn --transpile-only day-3",
+    "four": "ts-node-dev --respawn --transpile-only day-4"
   },
   "keywords": [],
   "author": "",
