@@ -1,5 +1,5 @@
-import { testInput, testInput2 } from "./test.ts";
-// import { actualInput } from "./real.ts";
+import { testInput, testInput2 } from "./test";
+// import { actualInput } from "./real";
 
 // testCode
 const input = testInput;

@@ -1,5 +1,5 @@
-import { testInput } from "./test.js";
-import { actualInput } from "./real.js";
+import { testInput } from "./test";
+import { actualInput } from "./real";
 
 // testCode
 const rows = testInput.split("\n").filter((l) => l !== "");
@@ -12,15 +12,12 @@ const rows = testInput.split("\n").filter((l) => l !== "");
 const firstAnswer = () => {
   let count = 0;
   rows.forEach((row) => {
-    const numberArray = row.split(" ").map((n) => Number(n));
-
-    const ans = compareNumbersInArray(numberArray);
-
-    const passes = checkIfPasses(ans);
-
-    if (passes) {
-      count++;
-    }
+    // const numberArray = row.split(" ").map((n) => Number(n));
+    // const ans = compareNumbersInArray(numberArray);
+    // const passes = checkIfPasses(ans);
+    // if (passes) {
+    //   count++;
+    // }
   });
 
   console.log("part-1 answer:", count);

@@ -1,5 +1,5 @@
-// import { testInput } from "./test.ts";
-import { actualInput } from "./real.ts";
+// import { testInput } from "./test";
+import { actualInput } from "./real";
 
 // testCode
 // const rows = testInput.split("\n").filter((l) => l !== "");
