@@ -1,5 +1,5 @@
-import { testInput } from "./test";
-import { actualInput } from "./real";
+import { testInput, checkInput } from "./test";
+// import { actualInput } from "./real";
 
 // testCode
 const rows = testInput.split("\n").filter((l) => l !== "");
@@ -16,29 +16,67 @@ const checkSurroundingLetters = (
   letterIndex: number,
   letters: string[],
   rowLength: number,
-  ringWidth = 1
+  ringWidth: number,
+  letterArray: AvailableLetter[],
+  direction?: any,
+  newLetter?: AvailableLetter
 ) => {
   const allowedLetters = getAllowedLetters(letter, ringWidth);
-  // console.log({ allowedLetters });
-  // console.log({ letterIndex, l: letters });
 
-  const adjacentLetters = [
-    letters[letterIndex - ringWidth],
-    letters[letterIndex + ringWidth],
-    letters[letterIndex - rowLength * ringWidth],
-    letters[letterIndex - rowLength * ringWidth - ringWidth],
-    letters[letterIndex - rowLength * ringWidth + ringWidth],
-    letters[letterIndex + rowLength * ringWidth],
-    letters[letterIndex + rowLength * ringWidth + ringWidth],
-    letters[letterIndex + rowLength * ringWidth - ringWidth],
-  ].filter(Boolean);
-  // console.log({ adjacentLetters, allowedLetters });
+  const adjacentLetters = {
+    t: letters[letterIndex + rowLength * ringWidth],
+    l: letters[letterIndex - ringWidth],
+    r: letters[letterIndex + ringWidth],
+    b: letters[letterIndex - rowLength * ringWidth],
+    tl: letters[letterIndex - rowLength * ringWidth - ringWidth],
+    tr: letters[letterIndex - rowLength * ringWidth + ringWidth],
+    br: letters[letterIndex + rowLength * ringWidth + ringWidth],
+    bl: letters[letterIndex + rowLength * ringWidth - ringWidth],
+  };
 
-  const containsAllAllowedLetters = allowedLetters.every((l) =>
-    adjacentLetters.includes(l)
-  );
+  const chosenLetters = Object.entries(adjacentLetters)
+    .map(([key, value]) => {
+      return { key, value };
+    })
+    .filter(({ value }) => value);
 
-  return containsAllAllowedLetters;
+  const directionsArray = chosenLetters.filter(({ value }) => {
+    return allowedLetters.includes(value);
+  });
+
+  // console.log({ letter, directionsArray });
+
+  console.log({ letterArray });
+  if (letter === "X") {
+    const mValue = directionsArray.findIndex((item) => item.value === "M");
+
+    if (directionsArray[mValue]) {
+      console.log("next one is an M", directionsArray[mValue]);
+
+      return checkSurroundingLetters(
+        letter,
+        letterIndex,
+        letters,
+        rowLength,
+        ringWidth + 1,
+        ["X", "M"],
+        directionsArray[mValue].key
+      );
+    }
+  } else if (letter === "M") {
+    console.log("is an M");
+
+    const aValue = directionsArray.findIndex((item) => item.value === "A");
+    const sValue = directionsArray.findIndex((item) => item.value === "S");
+
+    if (directionsArray[aValue]) {
+      console.log("next one is an A");
+    } else if (directionsArray[sValue]) {
+      console.log("next one is an S");
+    }
+  }
+
+  return false;
 
   // console.log({ adjacentLetters });
 };
@@ -57,29 +95,17 @@ const getAllowedLetters = (letter: AvailableLetter, ringWidth: number) => {
 const checkLetterPartofXMAS = (
   letter: AvailableLetter,
   letterIndex: number,
-  letters: string[],
-  rowLength: number,
-  ringWidth = 1 // Ring width is the distance away from the letter.
+  lettersArray: string[],
+  rowLength: number
 ) => {
   const continueCheck = checkSurroundingLetters(
     letter,
     letterIndex,
-    letters,
+    lettersArray,
     rowLength,
-    ringWidth
+    1,
+    []
   );
-
-  // return continueCheck && ringWidth === 4;
-  if (continueCheck && ringWidth < 4) {
-    // const newRingWidth = ringWidth + 1;
-    return checkLetterPartofXMAS(
-      letter,
-      letterIndex,
-      letters,
-      rowLength,
-      ringWidth + 1
-    );
-  }
 
   return continueCheck;
 };
@@ -89,22 +115,31 @@ const firstAnswer = () => {
 
   const letters = testInput.replaceAll("\n", "");
   const rowLength = rows[0].length;
+  const lettersArray = letters.split("").slice(0, 20);
 
-  // replace the letters which can't be part of XMAS, with .
-  const output = letters.split("").map((letter, letterIndex, lettersArray) => {
+  const output = lettersArray.map((letter, letterIndex) => {
     const check = checkLetterPartofXMAS(
       letter as AvailableLetter,
       letterIndex,
       lettersArray,
-      rowLength,
-      1
+      rowLength
     );
-    return check ? letter : ".";
+    // console.log({ check });
+    if (check) {
+      return letter;
+    } else {
+      return ".";
+    }
   });
 
-  console.log({ output });
+  const joinedOutput = output.join("");
+  const shouldBeOutput = checkInput
+    .split("\n")
+    .filter((l) => l !== "")
+    .join("");
+  console.log({ joinedOutput, shouldBeOutput });
 
-  console.log("part-1 answer:", count);
+  // console.log("part-1 answer:", count);
 };
 
 firstAnswer();
