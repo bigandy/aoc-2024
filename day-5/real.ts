@@ -1,4 +1,4 @@
-export const rulesOne = `
+export const combined = `
 48|39
 39|84
 39|23
@@ -1175,9 +1175,7 @@ export const rulesOne = `
 55|95
 55|14
 27|31
-`;
 
-export const pagesOne = `
 61,58,51,32,12,14,71
 58,25,54,14,12,94,32,76,39
 35,53,26,77,14,71,25,76,85,55,51,49,95

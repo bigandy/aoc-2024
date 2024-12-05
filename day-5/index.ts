@@ -1,5 +1,7 @@
-// import { rulesOne, pagesOne } from "./test";
-import { rulesOne, pagesOne } from "./real";
+// import { combined } from "./test";
+import { combined } from "./real";
+
+const [rulesOne, pagesOne] = combined.split("\n\n");
 
 const rulesArray = rulesOne
   .split("\n")
