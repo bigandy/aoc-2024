@@ -1,17 +1,67 @@
 // import { input } from "./test";
 import { input } from "./real";
 
-// testCode
-const rows = input.split("\n").filter(Boolean);
-console.log({ rows });
+// get a string of all input characters in a row.
+const inputString = input.replaceAll("\n", "");
+const inputStringLength = inputString.length;
+const rowLength = input.split("\n").filter(Boolean)[0].length;
 
-const mapObject = (arr: any[]) =>
-  Object.fromEntries(arr.map((el, index) => [index, el.split("")]));
+const replaceCharacterAtIndex = (
+  inputString: string,
+  index: number,
+  newCharacter: string
+) => {
+  let newString = inputString;
+  newString =
+    newString.substring(0, index) +
+    newCharacter +
+    newString.substring(index + 1);
+  return newString;
+};
 
-const mapArray = (arr: any[]) => arr.map((el) => el.split(""));
+const getNextDirection = (currentDirection: string) => {
+  const directions = ["^", ">", "v", "<"];
 
-const deepCloneArray = (inputArray: string[][]) =>
-  JSON.parse(JSON.stringify(inputArray));
+  const currentIndex = directions.indexOf(currentDirection);
+  const nextIndex =
+    currentIndex === directions.length - 1 ? 0 : currentIndex + 1;
+  return directions[nextIndex];
+};
+
+const getCursorAndNextCharacterInformation = (inputString: string) => {
+  const up = inputString.indexOf("^");
+  const right = inputString.indexOf(">");
+  const down = inputString.indexOf("v");
+  const left = inputString.indexOf("<");
+
+  let cursor = undefined;
+  let nextCharIndex = undefined;
+  let directionCharacter = undefined;
+
+  if (up !== -1) {
+    cursor = up;
+    nextCharIndex = cursor - rowLength;
+    directionCharacter = "^";
+  } else if (right !== -1) {
+    cursor = right;
+    nextCharIndex = cursor + 1;
+    directionCharacter = ">";
+  } else if (down !== -1) {
+    cursor = down;
+    nextCharIndex = cursor + rowLength;
+    directionCharacter = "v";
+  } else if (left !== -1) {
+    cursor = left;
+    nextCharIndex = cursor - 1;
+    directionCharacter = "<";
+  }
+
+  return {
+    cursor,
+    nextCharIndex,
+    directionCharacter,
+  };
+};
 
 // .slice(0, 1);
 // Actual Input
@@ -19,127 +69,48 @@ const deepCloneArray = (inputArray: string[][]) =>
 // .slice(0, 1);
 // const rows = actualInput.split("\n").filter((l) => l !== "");
 
+// FASTER NOW THAT USING STRINGS NOT ARRAYS
 const firstAnswer = () => {
-  const cycleGrid = (grid: string[][]) => {
-    const rowCount = grid.length;
-    const rowLength = grid[0].length;
-    // go through each row, by row
-    for (let row = 0; row < rowCount; row++) {
-      for (let column = 0; column < rowLength; column++) {
-        // console.log(row, column);
-        const currentCursor = grid[row][column];
+  const processString = (inputString: string) => {
+    const { cursor, nextCharIndex, directionCharacter } =
+      getCursorAndNextCharacterInformation(inputString);
 
-        // console.log({ currentCursor });
-        if (currentCursor === "^") {
-          const newGrid = deepCloneArray(grid);
-          if (row === 0) {
-            newGrid[row][column] = "X";
-            return newGrid;
-          }
-          const nextPosition = grid[row - 1][column];
-          console.log("check the one upwards", nextPosition);
-          if ([".", "X"].includes(nextPosition)) {
-            // replace current icon with an X. Move cursor to next position.
-            newGrid[row][column] = "X";
-            newGrid[row - 1][column] = "^";
-            // console.log(newGrid[row - 1][column]);
-          } else if (nextPosition === "#") {
-            newGrid[row][column] = ">";
-          }
-          return cycleGrid(newGrid);
-        } else if (currentCursor === ">") {
-          const newGrid = deepCloneArray(grid);
-          if (column === rowLength) {
-            newGrid[row][column] = "X";
-            return newGrid;
-          }
-          const nextPosition = grid[row][column + 1];
+    if (nextCharIndex! > inputStringLength || nextCharIndex! < 0) {
+      // replace the cursor with X and return it.
+      return replaceCharacterAtIndex(inputString, cursor!, "X");
+    }
 
-          console.log("check the one right", nextPosition);
+    if (inputString.charAt(nextCharIndex!) === "#") {
+      // rotate Current Direction
+      const newDirectionCharacter = getNextDirection(directionCharacter!);
 
-          if ([".", "X"].includes(nextPosition)) {
-            // replace current icon with an X. Move cursor to next position.
-            newGrid[row][column] = "X";
-            newGrid[row][column + 1] = ">";
-            // console.log(newGrid[row - 1][column]);
-          } else if (nextPosition === "#") {
-            console.log("next one right is a #");
-            newGrid[row][column] = "v";
-          }
-          return cycleGrid(newGrid);
-        } else if (currentCursor === "v") {
-          const newGrid = deepCloneArray(grid);
-          if (row === rowCount - 1) {
-            newGrid[row][column] = "X";
-            return newGrid;
-          }
-          const nextPosition = grid[row + 1][column];
-          console.log("check the one down", nextPosition);
+      let newString = replaceCharacterAtIndex(
+        inputString,
+        cursor!,
+        newDirectionCharacter
+      );
+      return processString(newString);
+    } else {
+      // replace the current cursor location with a x
+      let newString = replaceCharacterAtIndex(inputString, cursor!, "X");
+      // move the cursor to the nextChar location
+      newString = replaceCharacterAtIndex(
+        newString,
+        nextCharIndex!,
+        directionCharacter!
+      );
+      // console.log(newString);
 
-          if ([".", "X"].includes(nextPosition)) {
-            // replace current icon with an X. Move cursor to next position.
-            newGrid[row][column] = "X";
-            newGrid[row + 1][column] = "v";
-            // console.log(newGrid[row - 1][column]);
-          } else if (nextPosition === "#") {
-            newGrid[row][column] = "<";
-          }
-          return cycleGrid(newGrid);
-        } else if (currentCursor === "<") {
-          if (column === 0) {
-            return grid;
-          }
-          const nextPosition = grid[row][column - 1];
-          const newGrid = deepCloneArray(grid);
-          console.log("check the one left", nextPosition);
-
-          if ([".", "X"].includes(nextPosition)) {
-            // replace current icon with an X. Move cursor to next position.
-            newGrid[row][column] = "X";
-            newGrid[row][column - 1] = "<";
-            // console.log(newGrid[row - 1][column]);
-          } else if (nextPosition === "#") {
-            newGrid[row][column] = "^";
-          }
-          return cycleGrid(newGrid);
-        }
-      }
+      return processString(newString);
     }
   };
 
-  const grid = mapArray(rows);
-
-  const output = cycleGrid(grid);
-
-  const solution = output
-    .flat()
-    .reduce((accumulator: number, currentValue: string) => {
-      const additionalNumber = currentValue === "X" ? 1 : 0;
-      return accumulator + additionalNumber;
-    }, 0);
-
-  //   console.log({
-  //     output: output.flat().join(""),
-  //     expected: `
-  // ....#.....
-  // ....XXXXX#
-  // ....X...X.
-  // ..#.X...X.
-  // ..XXXXX#X.
-  // ..X.X.X.X.
-  // .#XXXXXXX.
-  // .XXXXXXX#.
-  // #XXXXXXX..
-  // ......#X..
-  // `
-  //       .split("\n")
-  //       .filter(Boolean)
-  //       .join(""),
-  //     solution,
-  //   });
+  const answer = processString(inputString);
+  const count = (answer.match(new RegExp("X", "g")) || []).length;
 
   // 4751 is too low!
-  console.log("part-1 answer:", solution);
+  // Off by one!
+  console.log("part-1 answer:", count);
 };
 
 firstAnswer();
