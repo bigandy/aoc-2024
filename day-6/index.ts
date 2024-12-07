@@ -1,21 +1,21 @@
-// import { input } from "./test";
-import { input } from "./real";
+import { input, inputWithObstacle } from "./test";
+// import { input } from "./real";
 
 // get a string of all input characters in a row.
-const inputString = input.replaceAll("\n", "");
+const inputString = inputWithObstacle.replaceAll("\n", "");
 const inputStringLength = inputString.length;
 const rowLength = input.split("\n").filter(Boolean)[0].length;
 
 const replaceCharacterAtIndex = (
   inputString: string,
-  index: number,
+  cursorIndex: number,
   newCharacter: string
 ) => {
   let newString = inputString;
   newString =
-    newString.substring(0, index) +
+    newString.substring(0, cursorIndex) +
     newCharacter +
-    newString.substring(index + 1);
+    newString.substring(cursorIndex + 1);
   return newString;
 };
 
@@ -34,9 +34,9 @@ const getCursorAndNextCharacterInformation = (inputString: string) => {
   const down = inputString.indexOf("v");
   const left = inputString.indexOf("<");
 
-  let cursor = undefined;
-  let nextCharIndex = undefined;
-  let directionCharacter = undefined;
+  let cursor = 0;
+  let nextCharIndex = 0;
+  let directionCharacter = "^";
 
   if (up !== -1) {
     cursor = up;
@@ -59,6 +59,7 @@ const getCursorAndNextCharacterInformation = (inputString: string) => {
   return {
     cursor,
     nextCharIndex,
+    nextChar: inputString.charAt(nextCharIndex),
     directionCharacter,
   };
 };
@@ -75,29 +76,29 @@ const firstAnswer = () => {
     const { cursor, nextCharIndex, directionCharacter } =
       getCursorAndNextCharacterInformation(inputString);
 
-    if (nextCharIndex! > inputStringLength || nextCharIndex! < 0) {
+    if (nextCharIndex > inputStringLength || nextCharIndex < 0) {
       // replace the cursor with X and return it.
-      return replaceCharacterAtIndex(inputString, cursor!, "X");
+      return replaceCharacterAtIndex(inputString, cursor, "X");
     }
 
     if (inputString.charAt(nextCharIndex!) === "#") {
       // rotate Current Direction
-      const newDirectionCharacter = getNextDirection(directionCharacter!);
+      const newDirectionCharacter = getNextDirection(directionCharacter);
 
       let newString = replaceCharacterAtIndex(
         inputString,
-        cursor!,
+        cursor,
         newDirectionCharacter
       );
       return processString(newString);
     } else {
       // replace the current cursor location with a x
-      let newString = replaceCharacterAtIndex(inputString, cursor!, "X");
+      let newString = replaceCharacterAtIndex(inputString, cursor, "X");
       // move the cursor to the nextChar location
       newString = replaceCharacterAtIndex(
         newString,
-        nextCharIndex!,
-        directionCharacter!
+        nextCharIndex,
+        directionCharacter
       );
       // console.log(newString);
 
@@ -113,15 +114,103 @@ const firstAnswer = () => {
   console.log("part-1 answer:", count);
 };
 
-firstAnswer();
+// firstAnswer();
 
-// const secondAnswer = () => {
-//   let count = 0;
-//   rows.forEach((row) => {
+const findNewCharacter = (nextChar, directionalCharacter) => {
+  console.log({ nextChar, directionalCharacter });
 
-//   });
+  if (nextChar === "X") {
+    if (["<", ">"].includes(directionalCharacter)) {
+      return "-";
+    } else if (["^", "v"].includes(directionalCharacter)) {
+      return "|";
+    }
+  } else if (nextChar === "|") {
+    if (["<", ">"].includes(directionalCharacter)) {
+      return "+";
+    }
+    return "|";
+  } else if (nextChar === "-") {
+    if (["v", "^"].includes(directionalCharacter)) {
+      return "+";
+    }
+    return "-";
+  } else if (nextChar === "+") {
+    return false;
+  } else {
+    return "X";
+  }
+};
 
-//   console.log("part-2 answer:", count);
-// };
+const secondAnswer = () => {
+  const processString = (inputString: string) => {
+    const { cursor, nextCharIndex, nextChar, directionCharacter } =
+      getCursorAndNextCharacterInformation(inputString);
 
-// secondAnswer();
+    const goingOverBoard =
+      nextCharIndex > inputStringLength || nextCharIndex < 0;
+
+    // If going off the board, replace the final character with an X.
+    if (goingOverBoard) {
+      // replace the cursor with X and return it.
+      return replaceCharacterAtIndex(inputString, cursor!, "X");
+    }
+
+    if (nextChar === "#" || nextChar === "O") {
+      // rotate Current Direction
+      const newDirectionCharacter = getNextDirection(directionCharacter);
+
+      let newString = replaceCharacterAtIndex(
+        inputString,
+        cursor,
+        newDirectionCharacter
+      );
+      return processString(newString);
+    } else {
+      const getNewCharacter = findNewCharacter(nextChar, directionCharacter);
+      console.log({ getNewCharacter });
+      if (!getNewCharacter) {
+        return inputString;
+      }
+
+      // replace the current cursor location with a x
+      let newString = replaceCharacterAtIndex(
+        inputString,
+        cursor,
+        getNewCharacter!
+      );
+      // move the cursor to the nextChar location
+      newString = replaceCharacterAtIndex(
+        newString,
+        nextCharIndex,
+        directionCharacter
+      );
+      // console.log(newString);
+
+      return processString(newString);
+    }
+  };
+
+  const answer = processString(inputString);
+  const check = `
+....#.....
+....+---+#
+....|...|.
+..#.|...|.
+....|..#|.
+....|...|.
+.#.O^---+.
+........#.
+#.........
+......#...
+`;
+  console.log({
+    answe: answer,
+    check: check.split("\n").filter(Boolean).join(""),
+  });
+  // const count = (answer.match(new RegExp("X", "g")) || []).length;
+
+  // console.log("part-2 answer:", count);
+};
+
+secondAnswer();
