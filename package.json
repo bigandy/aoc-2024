@@ -9,7 +9,8 @@
     "three": "ts-node-dev --respawn --transpile-only day-3",
     "four": "ts-node-dev --respawn --transpile-only day-4",
     "five": "ts-node-dev --respawn --transpile-only day-5",
-    "six": "ts-node-dev --respawn --transpile-only day-6"
+    "six": "ts-node-dev --respawn --transpile-only day-6",
+    "seven": "ts-node-dev --respawn --transpile-only day-7"
   },
   "keywords": [],
   "author": "",
