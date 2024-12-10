@@ -1,23 +1,12 @@
-import { testInput } from "./test";
-import { actualInput } from "./real";
+import { input } from "./test";
+// import { input } from "./real";
 
-// testCode
-const rows = testInput.split("\n").filter((l) => l !== "");
-// .slice(0, 1);
-// Actual Input
-// const rows = actualInput.split("\n").filter((l) => l !== "");
-// .slice(0, 1);
-// const rows = actualInput.split("\n").filter((l) => l !== "");
+const rows = input.split("\n").filter((l) => l !== "");
 
 const firstAnswer = () => {
   let count = 0;
-  rows.forEach((row) => {
-    // const numberArray = row.split(" ").map((n) => Number(n));
-    // const ans = compareNumbersInArray(numberArray);
-    // const passes = checkIfPasses(ans);
-    // if (passes) {
-    //   count++;
-    // }
+  rows.forEach((row: string) => {
+    console.log({ row });
   });
 
   console.log("part-1 answer:", count);
@@ -27,8 +16,8 @@ firstAnswer();
 
 // const secondAnswer = () => {
 //   let count = 0;
-//   rows.forEach((row) => {
-
+//   rows.forEach((row: string) => {
+//     console.log({ row });
 //   });
 
 //   console.log("part-2 answer:", count);

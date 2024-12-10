@@ -1,3 +1,3 @@
-export const actualInput = `
+export const input = `
 
 `;
